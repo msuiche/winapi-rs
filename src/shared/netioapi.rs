@@ -700,3 +700,8 @@ extern "system" {
         Settings: *const DNS_INTERFACE_SETTINGS,
     ) -> NETIOAPI_API;
 }
+
+STRUCT!{struct IP_ADDRESS_PREFIX {
+    Prefix:SOCKADDR_INET,
+    PrefixLength:UINT8,
+}}
