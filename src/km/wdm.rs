@@ -82,7 +82,7 @@ pub const _KWAIT_REASON_WrPhysicalFault: _KWAIT_REASON = 39;
 pub const _KWAIT_REASON_MaximumWaitReason: _KWAIT_REASON = 40;
 pub type _KWAIT_REASON = i32;
 
-pub use self::_KWAIT_REASON as KWAIT_REASON;
+pub use _KWAIT_REASON as KWAIT_REASON;
 
 
 
@@ -338,7 +338,7 @@ mod fastcall {
     }
 }
 
-pub use self::fastcall::*;
+pub use fastcall::*;
 pub type PIRP = *mut IRP;
 pub type PIO_STACK_LOCATION = *mut IO_STACK_LOCATION;
 
@@ -567,7 +567,7 @@ mod _hide {
     }
 }
 
-pub use self::_hide::*;
+pub use _hide::*;
 
 pub fn IoGetCurrentIrpStackLocation(pirp: PIRP) -> PIO_STACK_LOCATION {
     unsafe {
