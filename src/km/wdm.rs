@@ -82,7 +82,7 @@ pub const _KWAIT_REASON_WrPhysicalFault: _KWAIT_REASON = 39;
 pub const _KWAIT_REASON_MaximumWaitReason: _KWAIT_REASON = 40;
 pub type _KWAIT_REASON = i32;
 
-pub use _KWAIT_REASON as KWAIT_REASON;
+pub use self::_KWAIT_REASON as KWAIT_REASON;
 
 
 
@@ -337,8 +337,15 @@ mod fastcall {
         pub fn IofCallDriver(DeviceObject: PDEVICE_OBJECT, Irp: PIRP) -> NTSTATUS;
     }
 }
+#[cfg(target_arch = "aarch64")]
+mod fastcall {
+    use super::*;
+    extern "system" {
+        pub fn IofCallDriver(DeviceObject: PDEVICE_OBJECT, Irp: PIRP) -> NTSTATUS;
+    }
+}
 
-pub use fastcall::*;
+pub use self::fastcall::*;
 pub type PIRP = *mut IRP;
 pub type PIO_STACK_LOCATION = *mut IO_STACK_LOCATION;
 
@@ -567,7 +574,22 @@ mod _hide {
     }
 }
 
-pub use _hide::*;
+#[cfg(target_arch = "aarch64")]
+mod _hide {
+    use super::*;
+    #[repr(C)]
+    #[derive(Clone)]
+    pub struct IO_STACK_LOCATION_s1_Parameters_u1_DeviceIoControl {
+        pub OutputBufferLength: ULONG,
+        pub __bindgen_padding_0: u32,
+        pub InputBufferLength: ULONG,
+        pub __bindgen_padding_1: u32,
+        pub IoControlCode: ULONG,
+        pub Type3InputBuffer: PVOID,
+    }
+}
+
+pub use self::_hide::*;
 
 pub fn IoGetCurrentIrpStackLocation(pirp: PIRP) -> PIO_STACK_LOCATION {
     unsafe {
